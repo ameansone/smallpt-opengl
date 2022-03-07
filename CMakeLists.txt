@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.15)
+project(smallpt)
+find_package(glfw3 REQUIRED)
+add_executable(smallpt glad.c main.cpp)
+target_include_directories(smallpt PRIVATE include)
+target_link_libraries(smallpt glfw ${CMAKE_DL_LIBS})
