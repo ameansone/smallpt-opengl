@@ -1,5 +1,7 @@
 # smallpt-opengl
 
+![screenshot](https://github.com/ameansone/smallpt-opengl/raw/master/screenshot.png)
+
 > 有点漏光
 
 opengl port of smallpt.
