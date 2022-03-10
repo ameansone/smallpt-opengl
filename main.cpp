@@ -34,9 +34,9 @@ vec3 radiance(in ray r) { int si; float t; vec3 rc = vec3(1, 1, 1);
     if (5 < i) { if (rand() < P) rc /= P; else { rc *= 0; break; } }
     vec3 p = r.o+t*r.d, n = normalize(p-s[si].p); bool into = (dot(r.d,n)<0);
     n *= (into?1:-1); r.o = p + .1 * n;
-    if (s[si].t == 1) { float r1=2*pi*rand(), r2=rand(), r2s=sqrt(1-r2*r2);
+    if (s[si].t == 1) {rc*=s[si].c; float r1=2*pi*rand(),r2=rand(),r2s=sqrt(r2);
       vec3 u=normalize(cross(n, abs(n.x)<0.1 ? vec3(1,0,0) : vec3(0,1,0)));
-      vec3 v=cross(u,n); r.d=(cos(r1)*r2s*u+sin(r1)*r2s*v+r2*n); rc*=s[si].c;
+      vec3 v=cross(u,n); r.d=(cos(r1)*r2s*u+sin(r1)*r2s*v+sqrt(1-r2)*n);
     } else if (s[si].t == 2) { r.d = reflect(r.d, n);
     } else { float nc=1.0, nt=1.5, ddn=dot(r.d, n), nnt = into ? nc/nt : nt/nc;
       float cos2t = 1-nnt*nnt*(1-ddn*ddn);
