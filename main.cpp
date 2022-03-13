@@ -40,15 +40,15 @@ vec3 radiance(in ray r) { int si; float t; vec3 rc = vec3(1, 1, 1);
     } else if (s[si].t == 2) { r.d = reflect(r.d, n);
     } else { float nc=1.0, nt=1.5, ddn=dot(r.d, n), nnt = into ? nc/nt : nt/nc;
       float cos2t = 1-nnt*nnt*(1-ddn*ddn);
-      if (cos2t < 0) { r.d = reflect(r.d, n); continue; }
       vec3 td = normalize(r.d * nnt - n * (ddn*nnt+sqrt(cos2t)));
       float a = nt-nc, b = nt+nc, c = 1+(into?ddn:dot(td, n));
-      float R0=(a*a)/(b*b), Re=R0+(1-R0)*c*c*c*c*c, Tr=1-Re;
-      float P =0.25+0.5*Re, RP=(i<3)?Re*2:Re/P,     TP=(i<3)?Tr*2:Tr/(1-P);
-      if (i<3?rand()<0.5:rand()<P) { r.d=reflect(r.d,n); rc *= RP; }
-      else { r.d = td; rc *= TP; r.o -= .2 * n; }
+      float R0=(a*a)/(b*b), Re=R0+(1-R0)*c*c*c*c*c;
+      if (cos2t < 0 || rand() < Re) r.d = reflect(r.d, n);
+      else { r.d = td; r.o -= .2 * n; }
     }
-  } return rc;}
+  }
+  return rc;
+}
 void main() {ray cam = ray(vec3(50,52,295.6),normalize(vec3(0,-0.042612,-1)));
   vec3 cx=vec3(wh.x/wh.y,0,0)/2,cy=normalize(cross(cx,cam.d))/2,tc=vec3(0,0,0);
   for(float y=.5;y<2;++y) for(float x=.5;x<2;++x) {vec2 r=vec2(rand(),rand())*2;
